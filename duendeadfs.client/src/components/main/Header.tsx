@@ -1,19 +1,19 @@
+import { useOidc } from '@axa-fr/react-oidc'
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
 
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
+  { name: 'Home', href: '/', current: false },
+  { name: 'About', href: '/about', current: false },
 ]
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-const Home = () => {
+const Header = () => {
+  const { login, logout, renewTokens, isAuthenticated } = useOidc();
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -44,9 +44,9 @@ const Home = () => {
               <div className="hidden sm:ml-6 sm:block">
                 <div className="flex space-x-4">
                   {navigation.map((item) => (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.href}
                       className={classNames(
                         item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                         'rounded-md px-3 py-2 text-sm font-medium'
@@ -54,7 +54,7 @@ const Home = () => {
                       aria-current={item.current ? 'page' : undefined}
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -69,12 +69,39 @@ const Home = () => {
                 <BellIcon className="h-6 w-6" aria-hidden="true" />
               </button> */}
 
-              <Link
-                to="/whether"
+              {/* <Link
+                to="/sign-in"
                 className='text-white'
               >
                 Sign in
-              </Link>
+              </Link> */}
+              {!isAuthenticated && (
+                <button
+                  type="button"
+                  className="btn text-white"
+                  onClick={() => login("/profile")}
+                >
+                  Login
+                </button>
+              )}
+              {isAuthenticated && (
+                <button
+                  type="button"
+                  className="text-white"
+                  onClick={() => logout()}
+                >
+                  logout
+                </button>
+              )}
+              {isAuthenticated && (
+                <button
+                  type="button"
+                  className="text-white"
+                  onClick={() => renewTokens()}
+                >
+                  renewTokens
+                </button>
+              )}
 
               {/* Profile dropdown
               <Menu as="div" className="relative ml-3">
@@ -160,4 +187,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Header;

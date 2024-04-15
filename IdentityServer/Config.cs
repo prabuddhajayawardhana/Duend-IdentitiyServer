@@ -59,9 +59,6 @@ namespace IdentityServer
             }
         }
 
-        public const string Admin = "admin";
-        public const string Customer = "customer";
-
         public static IEnumerable<IdentityResource> IdentityResources =>
          new[]
          {
@@ -116,8 +113,8 @@ namespace IdentityServer
                         IdentityServerConstants.StandardScopes.Email,
                         JwtClaimTypes.Role
                     },
-                    RedirectUris={ "https://localhost:7001/signin-oidc" },
-                    PostLogoutRedirectUris={"https://localhost:7001/signout-callback-oidc" },
+                    RedirectUris={ "http://localhost:5173/signin-oidc" },
+                    PostLogoutRedirectUris={"http://localhost:5173/signout-callback-oidc" },
                 }
             };
     }

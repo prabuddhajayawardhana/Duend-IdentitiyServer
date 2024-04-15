@@ -1,4 +1,5 @@
 using IdentityServer;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,18 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("MyCorsPolicy",
-        builder =>
-        {
-            builder.WithOrigins("*")
-                   .SetIsOriginAllowedToAllowWildcardSubdomains();
-        });
-});
-
-
 
 builder.Services
     .AddIdentityServer(options =>
@@ -45,12 +34,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseIdentityServer();
-
-app.UseCors("MyCorsPolicy");
 
 app.UseRouting();
 
