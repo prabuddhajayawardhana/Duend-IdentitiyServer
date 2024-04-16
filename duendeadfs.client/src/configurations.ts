@@ -2,7 +2,7 @@ import { TokenRenewMode, TokenAutomaticRenewMode } from '@axa-fr/react-oidc';
 
 export const configurationIdentityServer = {
     client_id: "interactive.public.short",
-    redirect_uri: "https://localhost:7001/signin-oidc",
+    redirect_uri: window.location.origin + "/signin-oidc",
     silent_redirect_uri: window.location.origin + "/authentication/silent-callback",
     //silent_login_uri: window.location.origin + '/signin-oidc',
     scope: "weatherapi",
