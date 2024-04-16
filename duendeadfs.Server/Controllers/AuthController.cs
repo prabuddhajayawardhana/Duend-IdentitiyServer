@@ -8,8 +8,7 @@ namespace duendeadfs.Server.Controllers
     public class AuthController : ControllerBase
     {
         [HttpGet]
-        [Authorize]
-        public IActionResult Login()
+        public IActionResult Callback(string code, string state)
         {
             return Ok("log in");
         }

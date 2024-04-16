@@ -1,52 +1,90 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+     .AddJwtBearer("token", options =>
+     {
+         options.Authority = "https://localhost:5001";
+         options.MapInboundClaims = false;
+
+         options.TokenValidationParameters = new TokenValidationParameters()
+         {
+             ValidateAudience = false,
+             ValidTypes = new[] { "at+jwt" },
+
+             NameClaimType = "name",
+             RoleClaimType = "role"
+         };
+     });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = "oidc";
-}).AddCookie(options =>
-{
-    options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-    options.LoginPath = "/Auth";
-    options.AccessDeniedPath = "/Auth/AccessDenied";
-    options.SlidingExpiration = true;
-}).AddOpenIdConnect("oidc", options =>
-{
-    options.Authority = "https://localhost:5002";
-    options.GetClaimsFromUserInfoEndpoint = true;
-    options.ClientId = "weatherapi";
-    options.ClientSecret = "secret";
-    options.ResponseType = "code";
+//.AddCookie(options =>
+//{
+//    options.Cookie.HttpOnly = true;
+//    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+//    options.LoginPath = "/Profile";
+//    options.AccessDeniedPath = "/Auth/AccessDenied";
+//    options.SlidingExpiration = true;
+//}).AddOpenIdConnect("oidc", options =>
+//{
+//    options.Authority = "https://localhost:5001";
+//    options.GetClaimsFromUserInfoEndpoint = true;
+//    options.ClientId = "weatherapi";
+//    options.ClientSecret = "secret";
+//    options.ResponseType = "code";
 
-    
-    options.MapInboundClaims = false; 
+//    options.MapInboundClaims = false;
 
-    options.SaveTokens = true;
-});
+//    options.SaveTokens = true;
+//});
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("MyCorsPolicy",
-        builder =>
-        {
-            builder.WithOrigins("*")
-                   .AllowAnyHeader()
-                   .AllowAnyMethod()
-                   .SetIsOriginAllowedToAllowWildcardSubdomains();
-        });
-});
+
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultScheme = "cookie";
+//    options.DefaultChallengeScheme = "oidc";
+//    options.DefaultSignOutScheme = "oidc";
+//}).AddCookie("cookie", options =>
+//{
+//    options.Cookie.Name = "__Host-bff";
+//    options.Cookie.SameSite = SameSiteMode.Strict;
+//}).AddOpenIdConnect("oidc", options =>
+//{
+//    options.Authority = "https://localhost:5001";
+//    options.GetClaimsFromUserInfoEndpoint = true;
+//    options.ClientId = "service.weatherapi";
+//    options.ClientSecret = "secret";
+//    options.ResponseType = "code";
+
+//    options.MapInboundClaims = false;
+
+//    options.SaveTokens = true;
+//});
+
+
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("MyCorsPolicy",
+//        builder =>
+//        {
+//            builder.WithOrigins("*")
+//                   .AllowAnyHeader()
+//                   .AllowAnyMethod()
+//                   .SetIsOriginAllowedToAllowWildcardSubdomains();
+//        });
+//});
 var app = builder.Build();
-
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
@@ -57,13 +95,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-app.UseCors(
-        options => options.WithOrigins("*").AllowAnyMethod()
-    );
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHttpsRedirection();
 
 app.MapControllers();
 

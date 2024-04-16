@@ -4,6 +4,7 @@ using IdentityModel;
 using Duende.IdentityServer.Test;
 using System.Security.Claims;
 using System.Text.Json;
+using static Duende.IdentityServer.Models.IdentityResources;
 
 namespace IdentityServer
 {
@@ -60,17 +61,17 @@ namespace IdentityServer
         }
 
         public static IEnumerable<IdentityResource> IdentityResources =>
-         new[]
-         {
-            new IdentityResources.OpenId(),
-            new IdentityResources.Profile(),
-            new IdentityResources.Email(),
-            new IdentityResource
-            {
-              Name = "role",
-              UserClaims = new List<string> {"role"}
-            }
-         };
+             new[]
+             {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
+                new IdentityResources.Email(),
+                new IdentityResource
+                {
+                  Name = "role",
+                  UserClaims = new List<string> {"role"}
+                }
+             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
@@ -84,12 +85,12 @@ namespace IdentityServer
 
         public static IEnumerable<ApiResource> ApiResources => new[]
         {
-          new ApiResource("weatherapi")
-          {
-            Scopes = new List<string> {"weatherapi.read", "weatherapi.write"},
-            ApiSecrets = new List<Secret> {new Secret("ScopeSecret".Sha256())},
-            UserClaims = new List<string> {"role"}
-          }
+              new ApiResource("weatherapi")
+              {
+                Scopes = new List<string> {"weatherapi.read", "weatherapi.write"},
+                ApiSecrets = new List<Secret> {new Secret("ScopeSecret".Sha256())},
+                UserClaims = new List<string> {"role"}
+              }
         };
 
         public static IEnumerable<Client> Clients =>
@@ -100,11 +101,11 @@ namespace IdentityServer
                     ClientId = "service.client",
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = { "api1", "api2.read_only" }
+                    AllowedScopes = { "weatherapi", "read" }
                 },
                 new Client
                 {
-                    ClientId = "weatherapi",
+                    ClientId = "interactive.public.short",
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Code,
                     AllowedScopes = { "weatherapi",
@@ -113,8 +114,9 @@ namespace IdentityServer
                         IdentityServerConstants.StandardScopes.Email,
                         JwtClaimTypes.Role
                     },
-                    RedirectUris={ "http://localhost:5173/signin-oidc" },
+                    RedirectUris={ "https://localhost:7001/signin-oidc" },
                     PostLogoutRedirectUris={"http://localhost:5173/signout-callback-oidc" },
+                    RequireConsent = false
                 }
             };
     }

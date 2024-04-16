@@ -1,4 +1,5 @@
 using IdentityServer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages();
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(@"C:\keyDirectory"));
 
 builder.Services
     .AddIdentityServer(options =>
@@ -22,7 +26,8 @@ builder.Services
     .AddInMemoryClients(Config.Clients)
     .AddInMemoryApiResources(Config.ApiResources)
     .AddInMemoryApiScopes(Config.ApiScopes)
-    .AddInMemoryIdentityResources(Config.IdentityResources);
+    .AddInMemoryIdentityResources(Config.IdentityResources)
+    .AddExtensionGrantValidator<TokenExchangeGrantValidator>();
 
 var app = builder.Build();
 
@@ -50,8 +55,8 @@ app.UseAuthorization();
 
 app.MapRazorPages().RequireAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

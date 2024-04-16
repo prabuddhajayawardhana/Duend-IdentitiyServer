@@ -1,18 +1,39 @@
-import { Outlet } from "react-router-dom";
-import "./App.css";
-import Header from "./components/main/Header";
+import { OidcProvider } from "@axa-fr/react-oidc";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { configurationIdentityServer } from "./configurations";
+import Home from "./components/Home";
+import About from "./components/layout/About";
+import Signin from "./components/layout/Signin";
+import { SecureProfile } from "./components/layout/Profile";
+
+
+const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home />,
+      children: [
+        {
+          path: "/profile",
+          element: <SecureProfile />
+        },
+        {
+          path: "/about",
+          element: <About />
+        },
+        {
+          path: "/sign-in",
+          element: <Signin />
+        }
+      ]
+    },
+  ]);
 
 function App() {
   return (
-    <div>
-      <Header />
-      <main>
-        <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
-            <Outlet />
-        </div>
-      </main>
-    </div>
-  );
+    <OidcProvider configuration={configurationIdentityServer}>
+        <RouterProvider router={router} />
+    </OidcProvider>
+  )
 }
 
-export default App;
+export default App

@@ -1,50 +1,23 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import About from './components/layout/About.tsx'
-import Signin from './components/layout/Signin.tsx'
 import App from './App.tsx'
-import { OidcProvider } from '@axa-fr/react-oidc'
-import Profile from './components/layout/Profile.tsx'
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      {
-        path: "",
-        element: <Profile />
-      },
-      {
-        path: "/about",
-        element: <About />
-      },
-      {
-        path: "/sign-in",
-        element: <Signin />
-      }
-    ]
-  },
-]);
 
-const configuration = {
-    client_id: "weatherapi",
-    redirect_uri: "http://localhost:5173/signin-oidc",
-    silent_redirect_uri:
-        window.location.origin + "/about",
-    scope: "weatherapi", // offline_access scope allow your client to retrieve the refresh_token
-    authority: "https://localhost:5001",
-    service_worker_relative_url: "/OidcServiceWorker.js", // just comment that line to disable service worker mode
-    service_worker_only: false,
-    demonstrating_proof_of_possession: false,
-};
+// const configuration = {
+//     client_id: "weatherapi",
+//     redirect_uri: "http://localhost:5173/signin-oidc",
+//     silent_redirect_uri:
+//         window.location.origin + "/about",
+//     scope: "weatherapi", // offline_access scope allow your client to retrieve the refresh_token
+//     authority: "https://localhost:5001",
+//     service_worker_relative_url: "/OidcServiceWorker.js", // just comment that line to disable service worker mode
+//     service_worker_only: false,
+//     demonstrating_proof_of_possession: false,
+// };
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <OidcProvider configuration={configuration}>
-            <RouterProvider router={router} />
-        </OidcProvider>
+        <App />
     </React.StrictMode>,
 )

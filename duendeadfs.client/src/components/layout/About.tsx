@@ -1,10 +1,8 @@
-import { OidcSecure } from "@axa-fr/react-oidc";
+import { OidcSecure } from "@axa-fr/react-oidc"
 
 function About() {
   return (
-    <OidcSecure>
-        <div>About</div>
-    </OidcSecure >
+    <OidcSecure><div>About</div></OidcSecure>
   )
 }
 
