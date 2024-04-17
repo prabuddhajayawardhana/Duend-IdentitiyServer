@@ -1,6 +1,5 @@
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,19 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-     .AddJwtBearer("token", options =>
+    .AddJwtBearer(options =>
      {
          options.Authority = "https://localhost:5001";
-         options.MapInboundClaims = false;
+         options.Audience = "https://localhost:5001/resources";
 
-         options.TokenValidationParameters = new TokenValidationParameters()
-         {
-             ValidateAudience = false,
-             ValidTypes = new[] { "at+jwt" },
-
-             NameClaimType = "name",
-             RoleClaimType = "role"
-         };
+         options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
      });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

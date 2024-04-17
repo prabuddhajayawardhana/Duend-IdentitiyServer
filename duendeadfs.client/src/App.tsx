@@ -2,8 +2,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./components/Home";
 import About from "./components/layout/About";
 import Signin from "./components/layout/Signin";
-import Profile from "./components/layout/Profile";
 import { AuthProvider } from "oidc-react";
+import Weather from "./components/layout/Weather";
 
 const router = createBrowserRouter([
   {
@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Profile />,
+        element: <Weather />,
       },
       {
         path: "/about",
