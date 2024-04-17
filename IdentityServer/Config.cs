@@ -61,25 +61,17 @@ namespace IdentityServer
         }
 
         public static IEnumerable<IdentityResource> IdentityResources =>
-             new[]
+             new IdentityResource[]
              {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
-                new IdentityResources.Email(),
-                new IdentityResource
-                {
-                  Name = "role",
-                  UserClaims = new List<string> {"role"}
-                }
+                new IdentityResources.Profile()
              };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-                new ApiScope("weatherapi", "Weatherapi Server"),
-                new ApiScope(name: "read",   displayName: "Read your data."),
-                new ApiScope(name: "write",  displayName: "Write your data."),
-                new ApiScope(name: "delete", displayName: "Delete your data.")
+                new ApiScope(name: "weatherapi.read",   displayName: "Read your data."),
+                new ApiScope(name: "weatherapi.write",  displayName: "Write your data."),
             };
 
 
@@ -101,22 +93,19 @@ namespace IdentityServer
                     ClientId = "service.client",
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = { "weatherapi", "read" }
+                    AllowedScopes = { "weatherapi.read", "weatherapi.write" }
                 },
                 new Client
                 {
                     ClientId = "interactive.public.short",
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Code,
-                    AllowedScopes = { "weatherapi",
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email,
-                        JwtClaimTypes.Role
-                    },
-                    RedirectUris={ "https://localhost:7001/signin-oidc" },
+                     AllowedScopes = { "weatherapi.read", "weatherapi.write",
+                         IdentityServerConstants.StandardScopes.OpenId,
+                         IdentityServerConstants.StandardScopes.Profile,
+                     },
+                    RedirectUris={ "http://localhost:5173" },
                     PostLogoutRedirectUris={"http://localhost:5173/signout-callback-oidc" },
-                    RequireConsent = false
                 }
             };
     }
