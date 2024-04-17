@@ -1,10 +1,10 @@
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const navigation = [
   { name: 'Home', href: '/', current: false },
-  { name: 'Weather', href: '/Weather', current: false },
   { name: 'About', href: '/about', current: false },
 ]
 
@@ -13,6 +13,7 @@ function classNames(...classes: string[]) {
 }
 
 const Header = () => {
+
 
   return (
     <Disclosure as="nav" className="bg-gray-800">

@@ -33,7 +33,7 @@ const oidcConfig = {
   authority: "https://localhost:5001",
   clientId: "interactive.public.short",
   clientSecret: "secret",
-  redirectUri: "http://localhost:5173"
+  redirectUri: `${window.location.origin}`
 };
 
 

@@ -21,61 +21,6 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
-//.AddCookie(options =>
-//{
-//    options.Cookie.HttpOnly = true;
-//    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-//    options.LoginPath = "/Profile";
-//    options.AccessDeniedPath = "/Auth/AccessDenied";
-//    options.SlidingExpiration = true;
-//}).AddOpenIdConnect("oidc", options =>
-//{
-//    options.Authority = "https://localhost:5001";
-//    options.GetClaimsFromUserInfoEndpoint = true;
-//    options.ClientId = "weatherapi";
-//    options.ClientSecret = "secret";
-//    options.ResponseType = "code";
-
-//    options.MapInboundClaims = false;
-
-//    options.SaveTokens = true;
-//});
-
-
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultScheme = "cookie";
-//    options.DefaultChallengeScheme = "oidc";
-//    options.DefaultSignOutScheme = "oidc";
-//}).AddCookie("cookie", options =>
-//{
-//    options.Cookie.Name = "__Host-bff";
-//    options.Cookie.SameSite = SameSiteMode.Strict;
-//}).AddOpenIdConnect("oidc", options =>
-//{
-//    options.Authority = "https://localhost:5001";
-//    options.GetClaimsFromUserInfoEndpoint = true;
-//    options.ClientId = "service.weatherapi";
-//    options.ClientSecret = "secret";
-//    options.ResponseType = "code";
-
-//    options.MapInboundClaims = false;
-
-//    options.SaveTokens = true;
-//});
-
-
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("MyCorsPolicy",
-//        builder =>
-//        {
-//            builder.WithOrigins("*")
-//                   .AllowAnyHeader()
-//                   .AllowAnyMethod()
-//                   .SetIsOriginAllowedToAllowWildcardSubdomains();
-//        });
-//});
 var app = builder.Build();
 app.UseDefaultFiles();
 app.UseStaticFiles();

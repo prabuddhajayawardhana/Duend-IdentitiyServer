@@ -104,8 +104,7 @@ namespace IdentityServer
                          IdentityServerConstants.StandardScopes.OpenId,
                          IdentityServerConstants.StandardScopes.Profile,
                      },
-                    RedirectUris={ "http://localhost:5173" },
-                    PostLogoutRedirectUris={"http://localhost:5173/signout-callback-oidc" },
+                    RedirectUris={ "http://localhost:5173" }
                 }
             };
     }
